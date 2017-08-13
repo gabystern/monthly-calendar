@@ -2,10 +2,11 @@ doctype html
 html
   head
     meta name="keywords" content="template language"
-
+    script src="jquery-3.2.1.min.js"
+    javascript:
+      @each_day = document.getElementById("2017-07-02")
   body
     h1 #{Date.today.strftime("%B")}
-    = link_to 'Create an Event', new_event_path, class: 'btn btn-green button'
     table
       thead
         tr
@@ -18,11 +19,15 @@ html
           th Saturday
 
       tbody
+        - @month = Date.today.month
+        - @year = Date.today.year
         - @beginning_of_month = Date.civil(2017, 7,1)
         - @end_of_month = Date.civil(2017, 7, -1)
         - @weeks = (@beginning_of_month..@end_of_month).map {|day| day}.each_slice(7).to_a
-
         - @weeks.each do | week |
           tr
           - week.each do | day |
-            td #{day}
+            - @day = day.day.to_s
+            td id="#{day}" #{day}
+
+      = link_to 'Create an Event', new_event_path, class: 'btn btn-green button'

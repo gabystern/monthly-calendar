@@ -5,6 +5,6 @@ html
   body
     h1 Event: #{@event.name}
     h2 Time: #{@event.time}
-    = button_to 'Edit Event', edit_event_path(@event), class: 'btn btn-green button'
-    = button_to 'Delete', event_path(@event),  method: :delete, remote: true, class: 'btn btn-danger'
-    = button_to 'Back to Calendar', events_path, class: 'btn btn-green button'
+    = link_to 'Edit Event', edit_event_path(@event), class: 'btn btn-green button'
+    = link_to 'Delete', event_path(@event),  method: :delete, remote: true, class: 'btn btn-danger'
+    = link_to 'Back to Calendar', events_path, class: 'btn btn-green button'
