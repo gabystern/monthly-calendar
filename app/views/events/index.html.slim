@@ -2,9 +2,15 @@ doctype html
 html
   head
     meta name="keywords" content="template language"
-    script src="jquery-3.2.1.min.js"
     javascript:
-      @each_day = document.getElementById("2017-07-02")
+      script src = "jquery-3.2.1.min.js"
+      $( document ).ready(function() {
+          id = "d2017-07-02"
+          exampleDay = $('#'+id)
+          exampleDay.append("hello")
+          allEvents = Array.from(@events)
+      });
+
   body
     h1 #{Date.today.strftime("%B")}
     table
@@ -27,7 +33,7 @@ html
         - @weeks.each do | week |
           tr
           - week.each do | day |
-            - @day = day.day.to_s
-            td id="#{day}" #{day}
+            - tester = "d" + day.to_s
+            td id="#{tester}" #{day}
 
       = link_to 'Create an Event', new_event_path, class: 'btn btn-green button'
