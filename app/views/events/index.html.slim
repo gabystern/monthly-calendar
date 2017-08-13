@@ -1,13 +1,11 @@
 doctype html
 html
   head
-    title Slim Examples
     meta name="keywords" content="template language"
-    javascript:
-      alert('Slim supports embedded javascript!')
 
   body
     h1 #{Date.today.strftime("%B")}
+    = link_to 'Create an Event', new_event_path, class: 'btn btn-green button'
     table
       thead
         tr
