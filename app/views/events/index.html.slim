@@ -11,18 +11,36 @@ html
       });
 
   body
-    h1 #{Date.today.strftime("%B")}
+    h1 #{Date.civil(2017, 7,1).strftime("%B")}
     table
       thead
         - @month = Date.today.month
         - @year = Date.today.year
         - @beginning_of_month = Date.civil(2017, 7,1)
         - @end_of_month = Date.civil(2017, 7, -1)
-        - @weeks = (@beginning_of_month..@end_of_month).map {|day| day}.each_slice(7).to_a
+        - @array = (@beginning_of_month..@end_of_month).map {|day| day}
+        - if @array[0].strftime("%A") == "Monday"
+          - @array.unshift(" ")
+        - elsif @array[0].strftime("%A") == "Tuesday"
+          - @array.unshift(" ", " ")
+        - elsif @array[0].strftime("%A") == "Wednesday"
+          - @array.unshift(" ", " ", " ")
+        - elsif @array[0].strftime("%A") == "Thursday"
+          - @array.unshift(" ", " ", " ", " ")
+        - elsif @array[0].strftime("%A") == "Friday"
+          - @array.unshift(" ", " ", " ", " ", " ")
+        - elsif @array[0].strftime("%A") == "Saturday"
+          - @array.unshift(" ", " ", " ", " ", " ", " ")
+
+        - @weeks = @array.each_slice(7).to_a
         tr
-          - @weeks[0].each do | day |
-            - day_name = day.strftime("%A")
-            th #{day_name}
+          th Sunday
+          th Monday
+          th Tuesday
+          th Wednesday
+          th Thursday
+          th Friday
+          th Saturday
 
       tbody
         - @weeks.each do | week |
