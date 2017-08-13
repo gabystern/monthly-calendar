@@ -2,25 +2,32 @@ doctype html
 html
   head
     meta name="keywords" content="template language"
-    javascript:
-      script src = "jquery-3.2.1.min.js"
-      $( document ).ready(function() {
-          id = "d2017-07-02"
-          exampleDay = $('#'+id)
-          exampleDay.append("hello")
-      });
+    script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"/
 
   body
+    coffee:
+      $ ->
+        console.log("DOM is ready")
+        id = "d2017-07-02"
+        exampleDay = $('#'+id)
+        console.log(@events)
+      $ ->
+        $("p").on "click", ->
+          console.log("button clicked!")
+
     = form_tag events_path, method: :get
     = select_month(Date.today)
     = select_year(Date.today)
-    = submit_tag
+    = submit_tag "Submit"
+    = button_to "click me", method: :get, class: "button"
+    p Next Month
     - if @selected == nil
       h1 Pick a Month and Year to View Your Calendar
     - if @selected != nil
       - month = @selected["month"]
       - year = @selected["year"]
-      h1 #{month} #{year}
+      - month_string = Date.new(year.to_i, month.to_i, 1).strftime("%B")
+      h1 #{month_string} #{year}
 
     - if @selected != nil
       - month = @selected["month"]
