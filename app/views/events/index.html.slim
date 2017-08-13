@@ -8,32 +8,27 @@ html
           id = "d2017-07-02"
           exampleDay = $('#'+id)
           exampleDay.append("hello")
-          allEvents = Array.from(@events)
       });
 
   body
     h1 #{Date.today.strftime("%B")}
     table
       thead
-        tr
-          th Sunday
-          th Monday
-          th Tuesday
-          th Wednesday
-          th Thursday
-          th Friday
-          th Saturday
-
-      tbody
         - @month = Date.today.month
         - @year = Date.today.year
         - @beginning_of_month = Date.civil(2017, 7,1)
         - @end_of_month = Date.civil(2017, 7, -1)
         - @weeks = (@beginning_of_month..@end_of_month).map {|day| day}.each_slice(7).to_a
+        tr
+          - @weeks[0].each do | day |
+            - day_name = day.strftime("%A")
+            th #{day_name}
+
+      tbody
         - @weeks.each do | week |
           tr
           - week.each do | day |
-            - tester = "d" + day.to_s
-            td id="#{tester}" #{day}
+            - day_id = "d" + day.to_s
+            td id="#{day_id}" #{day}
 
       = link_to 'Create an Event', new_event_path, class: 'btn btn-green button'
