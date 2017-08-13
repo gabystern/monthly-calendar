@@ -4,6 +4,9 @@ class EventsController < ApplicationController
 
   def index
     @events = Event.all
+    if params[:date]
+      @selected = params[:date]
+    end
   end
 
   def show
@@ -45,7 +48,7 @@ class EventsController < ApplicationController
   private
 
   def event_params
-    params.require(:event).permit(:name, :time)
+    params.require(:event).permit(:name, :time, :month, :year)
   end
 
 end

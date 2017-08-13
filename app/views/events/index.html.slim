@@ -11,42 +11,54 @@ html
       });
 
   body
-    h1 #{Date.civil(2017, 7,1).strftime("%B")}
-    table
-      thead
-        - @month = Date.today.month
-        - @year = Date.today.year
-        - @beginning_of_month = Date.civil(2017, 7,1)
-        - @end_of_month = Date.civil(2017, 7, -1)
-        - @array = (@beginning_of_month..@end_of_month).map {|day| day}
-        - if @array[0].strftime("%A") == "Monday"
-          - @array.unshift(" ")
-        - elsif @array[0].strftime("%A") == "Tuesday"
-          - @array.unshift(" ", " ")
-        - elsif @array[0].strftime("%A") == "Wednesday"
-          - @array.unshift(" ", " ", " ")
-        - elsif @array[0].strftime("%A") == "Thursday"
-          - @array.unshift(" ", " ", " ", " ")
-        - elsif @array[0].strftime("%A") == "Friday"
-          - @array.unshift(" ", " ", " ", " ", " ")
-        - elsif @array[0].strftime("%A") == "Saturday"
-          - @array.unshift(" ", " ", " ", " ", " ", " ")
+    = form_tag events_path, method: :get
+    = select_month(Date.today)
+    = select_year(Date.today)
+    = submit_tag
+    - if @selected == nil
+      h1 Pick a Month and Year to View Your Calendar
+    - if @selected != nil
+      - month = @selected["month"]
+      - year = @selected["year"]
+      h1 #{month} #{year}
 
-        - @weeks = @array.each_slice(7).to_a
-        tr
-          th Sunday
-          th Monday
-          th Tuesday
-          th Wednesday
-          th Thursday
-          th Friday
-          th Saturday
-
-      tbody
-        - @weeks.each do | week |
+    - if @selected != nil
+      - month = @selected["month"]
+      - year = @selected["year"]
+      table
+        thead
+          - @month = month.to_i
+          - @year = year.to_i
+          - @beginning_of_month = Date.civil(@year, @month ,1)
+          - @end_of_month = Date.civil(@year, @month , -1)
+          - @month_array = (@beginning_of_month..@end_of_month).map {|day| day}
+          - if @month_array[0].strftime("%A") == "Monday"
+            - @month_array.unshift(" ")
+          - elsif @month_array[0].strftime("%A") == "Tuesday"
+            - @month_array.unshift(" ", " ")
+          - elsif @month_array[0].strftime("%A") == "Wednesday"
+            - @month_array.unshift(" ", " ", " ")
+          - elsif @month_array[0].strftime("%A") == "Thursday"
+            - @month_array.unshift(" ", " ", " ", " ")
+          - elsif @month_array[0].strftime("%A") == "Friday"
+            - @month_array.unshift(" ", " ", " ", " ", " ")
+          - elsif @month_array[0].strftime("%A") == "Saturday"
+            - @month_array.unshift(" ", " ", " ", " ", " ", " ")
+          - @weeks = @month_array.each_slice(7).to_a
           tr
-          - week.each do | day |
-            - day_id = "d" + day.to_s
-            td id="#{day_id}" #{day}
+            th Sunday
+            th Monday
+            th Tuesday
+            th Wednesday
+            th Thursday
+            th Friday
+            th Saturday
+
+        tbody
+          - @weeks.each do | week |
+            tr
+            - week.each do | day |
+              - day_id = "d" + day.to_s
+              td id="#{day_id}" #{day}
 
       = link_to 'Create an Event', new_event_path, class: 'btn btn-green button'
