@@ -8,3 +8,4 @@
 
 Event.create(name: "first event", time: '2017-08-12 17:42:33 +0000')
 Event.create(name: "second event", time: '2017-08-12 18:42:33 +0000')
+Event.create(name: "second event", time: '2017-08-13 18:42:33 +0000')

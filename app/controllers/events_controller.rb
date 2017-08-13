@@ -21,7 +21,7 @@ class EventsController < ApplicationController
     @event = Event.new(event_params)
     find_event = Event.find_by(time: @event.time)
     if find_event.present?
-      flash.now[:alert] = "No file found!"
+      flash.now[:alert] = "There is already an event at that time"
       render :new
     else
       @event.save
