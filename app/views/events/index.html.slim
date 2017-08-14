@@ -8,27 +8,18 @@ html
     coffee:
       $ ->
         console.log("DOM is ready")
-        id = "d2017-07-02"
-        exampleDay = $('#'+id)
-        console.log(@events)
-
-    = form_tag events_path, method: :get
-    = select_month(Date.today)
-    = select_year(Date.today)
-    = submit_tag "Submit"
-    p Next Month
     - if @selected == nil
       h1 Pick a Month and Year to View Your Calendar
+    = form_tag events_path, method: :get
+      = select_month(Date.today)
+      = select_year(Date.today)
+      = submit_tag "Submit"
     - if @selected != nil
       - $month = @selected["month"].to_i
       - year = @selected["year"].to_i
-      coffee:
-        $ ->
-          $("p").on "click", ->
-            $month + 1
       - month_string = Date.new(year, $month, 1).strftime("%B")
       h1 #{month_string} #{year}
-
+      p Edit Events:
     - if @selected != nil
       - month = @selected["month"]
       - year = @selected["year"]
@@ -52,6 +43,7 @@ html
           - elsif @month_array[0].strftime("%A") == "Saturday"
             - @month_array.unshift(" ", " ", " ", " ", " ", " ")
           - @weeks = @month_array.each_slice(7).to_a
+
           tr
             th Sunday
             th Monday
@@ -64,24 +56,23 @@ html
         tbody
           - @weeks.each do | week |
             tr
-            - week.each do | day |
-              - $event_text
-              - day_id = "d" + day.to_s
-              - date = day.to_s
-              - @events.each do | event |
-                - if event.time.month.to_s.length == 1
-                  - month = "0"+event.time.month.to_s
-                - else
-                  - month = event.time.month.to_s
-                - if event.time.day.to_s.length == 1
-                  - day = "0"+event.time.day.to_s
-                - else
-                  - day = event.time.day.to_s
-                - event_time = "d" + event.time.year.to_s + "-" + month + "-" + day
-                - if day_id == event_time
-                  - $event_text = event.name
-                - else
-                  - $event_text = ""
-              td id="#{day_id}" #{date} #{$event_text}
+              - week.each do | day |
+                - $event_text
+                - day_id = "d" + day.to_s
+                - date = day.to_s
+                - day_events = @events.select do | event |
+                  - event.time.month.to_s.length == 1 ? month = "0"+event.time.month.to_s : month = event.time.month.to_s
+                  - event.time.day.to_s.length == 1 ? day = "0"+event.time.day.to_s : day = event.time.day.to_s
+                  - event_time = "d" + event.time.year.to_s + "-" + month + "-" + day
+                  - day_id == event_time
+                - print_events = day_events.collect do | event |
+                  - find_event = Event.find(event.id)
+                  - link_to "#{event.name}", event_path(find_event)
+                - print_events.each do |event|
+                  div class="edit" #{event}
+                - names = day_events.sort.collect do | event |
+                  - time = event.time.strftime("%l:%M %p")
+                  - time + ": " + event.name
+                td id="#{day_id}" #{date} #{names}
 
-      = link_to 'Create an Event', new_event_path, class: 'btn btn-green button'
+      = link_to 'Create an Event', new_event_path
