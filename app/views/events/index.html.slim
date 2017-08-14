@@ -57,9 +57,9 @@ html
                 - day_id = "d" + day.to_s
                 - date = day.to_s
                 - day_events = @events.select do | event |
-                  - event.date.month.to_s.length == 1 ? month = "0"+event.date.month.to_s : month = event.date.month.to_s
-                  - event.date.day.to_s.length == 1 ? day = "0"+event.date.day.to_s : day = event.date.day.to_s
-                  - event_time = "d" + event.date.year.to_s + "-" + month + "-" + day
+                  - event.time.month.to_s.length == 1 ? month = "0"+event.time.month.to_s : month = event.time.month.to_s
+                  - event.time.day.to_s.length == 1 ? day = "0"+event.time.day.to_s : day = event.time.day.to_s
+                  - event_time = "d" + event.time.year.to_s + "-" + month + "-" + day
                   - day_id == event_time
                 - print_events = day_events.collect do | event |
                   - find_event = Event.find(event.id)
@@ -67,7 +67,7 @@ html
                 - print_events.each do |event|
                   div class="edit" #{event}
                 - names = day_events.sort.collect do | event |
-                  - time = event.eventtime.strftime("%l:%M %p")
+                  - time = event.time.strftime("%l:%M %p")
                   - time + ": " + event.name
                 td id="#{day_id}" #{date} #{names}
 

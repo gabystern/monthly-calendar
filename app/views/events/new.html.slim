@@ -6,6 +6,5 @@ html
       = f.label :event_name
       = f.text_field :name
       = f.label :event_time
-      = f.date_select(:date)
-      = f.time_select(:eventtime)
+      = f.datetime_select(:time, :include_seconds => true)
       = f.submit

@@ -19,10 +19,10 @@ class EventsController < ApplicationController
 
   def create
     @event = Event.new(event_params)
-    find_event = Event.find_by(date: @event.date)
-    if find_event.present? && @event.eventtime.hour == find_event.eventtime.hour && @event.eventtime.min == find_event.eventtime.min
-      flash.now[:alert] = "There is already an event at that time"
-      render :new
+    find_event = Event.find_by(time: @event.time)
+    if find_event.present?
+      flash[:notice] = "There is already an event at this time. Find another time."
+      redirect_to new_event_path
     else
       @event.save
       redirect_to events_path
@@ -48,7 +48,7 @@ class EventsController < ApplicationController
   private
 
   def event_params
-    params.require(:event).permit(:name, :date, :eventtime)
+    params.require(:event).permit(:name, :time)
   end
 
 end
