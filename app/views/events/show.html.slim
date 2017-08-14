@@ -4,7 +4,7 @@ html
     meta name="keywords" content="template language"
   body
     h1 Event: #{@event.name}
-    h2 Time: #{@event.time.strftime("%A, %b %d %l:%M %p")}
+    h2 Time: #{@event.eventtime.strftime("%A, %b %d %l:%M %p")}
     = link_to 'Edit Event', edit_event_path(@event)
     br
     = link_to 'Delete Event', event_path(@event),  method: :delete, remote: true
